@@ -25,9 +25,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    framewindow.cpp
+    framewindow.cpp \
+    imageview.cpp \
+    controlboard.cpp \
+    filetreeview.cpp
 
 HEADERS  += mainwindow.h \
-    framewindow.h
+    framewindow.h \
+    imageview.h \
+    controlboard.h \
+    filetreeview.h
 
 FORMS    += mainwindow.ui

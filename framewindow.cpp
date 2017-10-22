@@ -12,16 +12,20 @@
 FrameWindow::FrameWindow(QWidget *parent) : QMainWindow(parent)
 {
     this->setMinimumSize(1000, 600);
-    open_action = new QAction(tr("&Open"), this);
-    open_action->setShortcut(QKeySequence::Open);
-    open_action->setStatusTip(tr("Open a file."));
-    file = this->menuBar()->addMenu(tr("&File"));
-    file->addAction(this->open_action);
-    tool_bar = new QToolBar;
-    tool_bar->addAction(this->open_action);
-    this->addToolBar(tool_bar);
-    connect(open_action, &QAction::triggered, this, &FrameWindow::show_file_dialog);
+    open_file_action = new QAction(tr("&Open File"), this);
+    open_file_action->setStatusTip(tr("Open a file."));
+    open_dir_action = new QAction(tr("&Open Directory"), this);
+    open_dir_action->setStatusTip(tr("Open a Directory"));
 
+    file = this->menuBar()->addMenu(tr("&File"));
+    file->addAction(this->open_file_action);
+    file->addAction(this->open_dir_action);
+    tool_bar = new QToolBar;
+    tool_bar->addAction(this->open_file_action);
+    tool_bar->addAction(this->open_dir_action);
+    this->addToolBar(tool_bar);
+    connect(open_file_action, &QAction::triggered, this, &FrameWindow::show_file_dialog);
+    connect(open_dir_action, &QAction::triggered, this, &FrameWindow::show_dir_dialog);
 }
 
 void FrameWindow::InitEvent()
@@ -31,10 +35,22 @@ void FrameWindow::InitEvent()
 
 void FrameWindow::show_file_dialog()
 {
-//    file_dialog = new QFileDialog(this);
-//    file_dialog->exec();
-//    QString path = QFileDialog::getOpenFileName(this, tr("Open File"), ".", tr("Text Files(*.txt)"));
+    QString file_path = QFileDialog::getOpenFileName(this);
+    message_box->information(this, "file", file_path, QMessageBox::Ok);
+}
 
-    QString fileName = QFileDialog::getOpenFileName(this);    //得到文件名
-    message_box->information(this, "aa", fileName, QMessageBox::Ok);
+void FrameWindow::show_dir_dialog()
+{
+    QString dir_path = QFileDialog::getExistingDirectory(this);
+    message_box->information(this, "dir", dir_path, QMessageBox::Ok);
+}
+
+void FrameWindow::set_file_path(QString file_path)
+{
+    filePath = file_path;
+}
+
+QString FrameWindow::get_file_path()
+{
+    return filePath;
 }
