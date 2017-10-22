@@ -10,6 +10,10 @@ class QToolBar;
 class QMessageBox;
 class QFileDialog;
 class QString;
+class QHBoxLayout;
+
+class FileTreeView;
+class ImageView;
 
 class FrameWindow : public QMainWindow
 {
@@ -17,11 +21,9 @@ class FrameWindow : public QMainWindow
 public:
     explicit FrameWindow(QWidget *parent = 0);
 
-    void InitEvent();
+    void set_dir_path(QString file_path, int index);
 
-    void set_file_path(QString file_path);
-
-    QString get_file_path();
+    QString get_dir_path();
 signals:
 
 public slots:
@@ -36,7 +38,11 @@ private:
     QMessageBox *message_box;
     QFileDialog *file_dialog;
 
-    QString filePath;
+    QHBoxLayout *main_layout;
+
+    QString dirPath = NULL;
+    FileTreeView *file_tree_view;
+    ImageView *image_view;
 };
 
 #endif // FRAMEWINDOW_H

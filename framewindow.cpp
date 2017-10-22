@@ -8,6 +8,10 @@
 #include <QFileDialog>
 #include <QTextStream>
 #include <QString>
+#include <QHBoxLayout>
+
+#include "filetreeview.h"
+#include "imageview.h"
 
 FrameWindow::FrameWindow(QWidget *parent) : QMainWindow(parent)
 {
@@ -26,31 +30,54 @@ FrameWindow::FrameWindow(QWidget *parent) : QMainWindow(parent)
     this->addToolBar(tool_bar);
     connect(open_file_action, &QAction::triggered, this, &FrameWindow::show_file_dialog);
     connect(open_dir_action, &QAction::triggered, this, &FrameWindow::show_dir_dialog);
-}
 
-void FrameWindow::InitEvent()
-{
-//    connect(open_action, &QAction::triggered, this, &FrameWindow::show_file_dialog);
+
+    file_tree_view = new FileTreeView;
+    image_view = new ImageView;
+    main_layout = new QHBoxLayout();
+    main_layout->addWidget(file_tree_view);
+    main_layout->addWidget(image_view);
+    QWidget *main_widget = new QWidget(this);
+    main_widget->setLayout(main_layout);
+    this->setCentralWidget(main_widget);
 }
 
 void FrameWindow::show_file_dialog()
 {
     QString file_path = QFileDialog::getOpenFileName(this);
-    message_box->information(this, "file", file_path, QMessageBox::Ok);
+    this->set_dir_path(file_path, 0);
 }
 
 void FrameWindow::show_dir_dialog()
 {
     QString dir_path = QFileDialog::getExistingDirectory(this);
-    message_box->information(this, "dir", dir_path, QMessageBox::Ok);
+    this->set_dir_path(dir_path, 1);
 }
 
-void FrameWindow::set_file_path(QString file_path)
+void FrameWindow::set_dir_path(QString file_path, int index)
 {
-    filePath = file_path;
+    if(index == 0)
+    {
+        QStringList path_list = file_path.split('/');
+        this->dirPath = "";
+        for(int i = 0; i < path_list.size() - 1; i ++)
+        {
+            this->dirPath += path_list[i];
+            this->dirPath += "/";
+        }
+    }
+    else if(index == 1)
+    {
+        this->dirPath = file_path;
+    }
+    else
+    {
+        this->dirPath = "";
+    }
+    message_box->information(this, "aa", this->dirPath, QMessageBox::Ok);
 }
 
-QString FrameWindow::get_file_path()
+QString FrameWindow::get_dir_path()
 {
-    return filePath;
+    return this->dirPath;
 }

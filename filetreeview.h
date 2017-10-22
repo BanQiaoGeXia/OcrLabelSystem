@@ -1,9 +1,11 @@
 #ifndef FILETREEVIEW_H
 #define FILETREEVIEW_H
 
-#include <QWidget>
+#include <QTreeView>
 
-class FileTreeView : public QWidget
+class QStandardItemModel;
+
+class FileTreeView : public QTreeView
 {
     Q_OBJECT
 public:
@@ -12,6 +14,10 @@ public:
 signals:
 
 public slots:
+
+private:
+
+    QStandardItemModel *dir_model;
 };
 
 #endif // FILETREEVIEW_H
